@@ -32,7 +32,6 @@
 		<property name="password" value="${database.password}" />
 	</bean>
 
-
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -63,5 +62,9 @@
 	<bean id="manager" class="com.ems.entity.Manager"/>
 	<bean id="employeeDao" class="com.ems.dao.EmployeeDaoImplementation"/>
 	<bean id="employeeService" class="com.ems.service.EmployeeServiceImplementation"/>
+	<bean id="leaveDao" class="com.ems.dao.LeaveDaoImplementation"/>
+	<bean id="leaveService" class="com.ems.service.LeaveServiceImplementation"/>
+	<bean id="managerDao" class="com.ems.dao.ManagerDaoImplementation"/>
+	<bean id="managerService" class="com.ems.service.ManagerServiceImplementation"/>
 
 </beans>

@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,21 +17,19 @@ public class Leave {
 	private int leaveId;
 	private String leaveType;
 	private String leaveStatus;
-	private String availableLeave;
+	private int availableLeave;
 	private Date toDate;
 	private Date fromDate;
-
-	@OneToOne()
-	@JoinColumn(name = "eid")
-	private Employee emp;
+	private int eid;
 
 	public Leave() {
 		super();
+
 		// TODO Auto-generated constructor stub
 	}
 
-	public Leave(int leaveId, String leaveType, String leaveStatus, String availableLeave, Date toDate, Date fromDate,
-			Employee emp) {
+	public Leave(int leaveId, String leaveType, String leaveStatus, int availableLeave, Date toDate, Date fromDate,
+			int eid) {
 		super();
 		this.leaveId = leaveId;
 		this.leaveType = leaveType;
@@ -41,7 +37,7 @@ public class Leave {
 		this.availableLeave = availableLeave;
 		this.toDate = toDate;
 		this.fromDate = fromDate;
-		this.emp = emp;
+		this.eid = eid;
 	}
 
 	public int getLeaveId() {
@@ -68,11 +64,11 @@ public class Leave {
 		this.leaveStatus = leaveStatus;
 	}
 
-	public String getAvailableLeave() {
+	public int getAvailableLeave() {
 		return availableLeave;
 	}
 
-	public void setAvailableLeave(String availableLeave) {
+	public void setAvailableLeave(int availableLeave) {
 		this.availableLeave = availableLeave;
 	}
 
@@ -92,19 +88,19 @@ public class Leave {
 		this.fromDate = fromDate;
 	}
 
-	public Employee getEmp() {
-		return emp;
+	public int getEid() {
+		return eid;
 	}
 
-	public void setEmp(Employee emp) {
-		this.emp = emp;
+	public void setEid(int eid) {
+		this.eid = eid;
 	}
 
 	@Override
 	public String toString() {
 		return "Leave [leaveId=" + leaveId + ", leaveType=" + leaveType + ", leaveStatus=" + leaveStatus
-				+ ", availableLeave=" + availableLeave + ", toDate=" + toDate + ", fromDate=" + fromDate + ", emp="
-				+ emp + "]";
+				+ ", availableLeave=" + availableLeave + ", toDate=" + toDate + ", fromDate=" + fromDate + ", eid="
+				+ eid + "]";
 	}
 
 }

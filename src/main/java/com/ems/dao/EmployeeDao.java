@@ -3,9 +3,10 @@ package com.ems.dao;
 import java.util.List;
 
 import com.ems.entity.Employee;
+import com.ems.entity.Manager;
 
 public interface EmployeeDao {
-	public void createEmployee(Employee employee);
+	public void createEmployee(Manager manager);
 
 	public List<Employee> getEmployeeList();
 

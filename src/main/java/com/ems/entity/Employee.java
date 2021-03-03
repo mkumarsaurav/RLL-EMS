@@ -2,18 +2,17 @@ package com.ems.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "EmpTable")
+@Table(name = "Employee")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Employee {
+	
 	@Id
-	@GeneratedValue
 	private int eid;
 
 	@Column(name = "FirstName")
@@ -32,14 +31,18 @@ public class Employee {
 	private String address;
 	@Column
 	private String role;
+	@Column
+	private int availableLeave;
+	@Column
+	private long phoneNumber;
 
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Employee(int eid, String fname, String lname, int age, String gender, String email, String address,
-			String password, String role) {
+	public Employee(int eid, String fname, String lname, int age, String gender, String email, String password,
+			String address, String role, int availableLeave, long phoneNumber) {
 		super();
 		this.eid = eid;
 		this.fname = fname;
@@ -47,9 +50,11 @@ public class Employee {
 		this.age = age;
 		this.gender = gender;
 		this.email = email;
-		this.address = address;
 		this.password = password;
+		this.address = address;
 		this.role = role;
+		this.availableLeave = availableLeave;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public int getEid() {
@@ -124,10 +129,27 @@ public class Employee {
 		this.role = role;
 	}
 
+	public int getAvailableLeave() {
+		return availableLeave;
+	}
+
+	public void setAvailableLeave(int availableLeave) {
+		this.availableLeave = availableLeave;
+	}
+
+	public long getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(long phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [eid=" + eid + ", fname=" + fname + ", lname=" + lname + ", age=" + age + ", gender=" + gender
-				+ ", email=" + email + ", password=" + password + ", address=" + address + ", role=" + role + "]";
+				+ ", email=" + email + ", password=" + password + ", address=" + address + ", role=" + role
+				+ ", availableLeave=" + availableLeave + ", phoneNumber=" + phoneNumber + "]";
 	}
 
 }

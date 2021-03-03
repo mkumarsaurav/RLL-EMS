@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ems.entity.Employee;
+import com.ems.entity.Manager;
 
 @Repository
 public class EmployeeDaoImplementation implements EmployeeDao {
@@ -23,9 +24,30 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 	}
 
 	@Override
-	public void createEmployee(Employee employee) {
-		getSession().saveOrUpdate(employee);
-		System.out.println("employee " + employee.getFname() + employee.getLname() + " stored in the DB !!!");
+	public void createEmployee(Manager manager) {
+
+		manager.setAvailableLeave(24);
+
+		if (manager.getRole().equals("Manager")) {
+
+			getSession().saveOrUpdate(manager);
+
+		} else {
+			Employee employee = new Employee();
+			employee.setAddress(manager.getAddress());
+			employee.setAge(manager.getAge());
+			employee.setEid(manager.getEid());
+			employee.setEmail(manager.getEmail());
+			employee.setFname(manager.getFname());
+			employee.setGender(manager.getGender());
+			employee.setLname(manager.getLname());
+			employee.setPassword(manager.getPassword());
+			employee.setRole(manager.getRole());
+			employee.setPhoneNumber(manager.getPhoneNumber());
+			employee.setAvailableLeave(24);
+			getSession().saveOrUpdate(employee);
+		}
+
 	}
 
 	@Override

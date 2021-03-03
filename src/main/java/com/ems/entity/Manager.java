@@ -5,12 +5,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "MANAGER")
-
 public class Manager extends Employee {
 
 	private int totalLeaveApproved;
 	private int totalLeaveRejected;
-	private String queriesByEmployee;
 
 	public Manager() {
 		super();
@@ -18,8 +16,8 @@ public class Manager extends Employee {
 	}
 
 	public Manager(int eid, String fname, String lname, int age, String gender, String email, String address,
-			String password, String role) {
-		super(eid, fname, lname, age, gender, email, address, password, role);
+			String password, String role, int availableLeave, long phoneNumber) {
+		super(eid, fname, lname, age, gender, email, address, password, role, availableLeave, phoneNumber);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -39,18 +37,9 @@ public class Manager extends Employee {
 		this.totalLeaveRejected = totalLeaveRejected;
 	}
 
-	public String getQueriesByEmployee() {
-		return queriesByEmployee;
-	}
-
-	public void setQueriesByEmployee(String queriesByEmployee) {
-		this.queriesByEmployee = queriesByEmployee;
-	}
-
 	@Override
 	public String toString() {
-		return "Manager [totalLeaveApproved=" + totalLeaveApproved + ", totalLeaveRejected=" + totalLeaveRejected
-				+ ", queriesByEmployee=" + queriesByEmployee + "]";
+		return "Manager [totalLeaveApproved=" + totalLeaveApproved + ", totalLeaveRejected=" + totalLeaveRejected + "]";
 	}
 
 }

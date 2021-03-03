@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ems.dao.EmployeeDao;
 import com.ems.entity.Employee;
+import com.ems.entity.Manager;
 
 @Service
 @Transactional
@@ -16,8 +17,8 @@ public class EmployeeServiceImplementation implements EmployeeService {
 	private EmployeeDao employeeDao;
 
 	@Override
-	public void createEmployee(Employee employee) {
-		employeeDao.createEmployee(employee);
+	public void createEmployee(Manager manager) {
+		employeeDao.createEmployee(manager);
 
 	}
 
@@ -50,5 +51,6 @@ public class EmployeeServiceImplementation implements EmployeeService {
 		return employeeDao.getEmployeeById(eid);
 
 	}
+
 
 }

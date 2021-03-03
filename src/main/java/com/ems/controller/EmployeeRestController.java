@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ems.entity.Employee;
+import com.ems.entity.Manager;
 import com.ems.service.EmployeeService;
 
 @RestController
@@ -35,9 +36,9 @@ public class EmployeeRestController {
 	}
 
 	@PostMapping("/create")
-	public Employee createEmployee(@RequestBody Employee employee) {
-		employeeService.createEmployee(employee);
-		return employee;
+	public Employee createEmployee(@RequestBody Manager manager) {
+		employeeService.createEmployee(manager);
+		return manager;
 	}
 
 	@GetMapping("/search/{empid}")

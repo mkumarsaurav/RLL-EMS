@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ems.entity.Employee;
 import com.ems.entity.Leave;
 
 @Repository
@@ -62,9 +63,13 @@ public class LeaveDaoImplementation implements LeaveDao {
 		String leaveStatus = leave.getLeaveStatus();
 		Query query = getSession().createQuery("from Leave me where leaveId=" + leaveId);
 		Leave e = (Leave) query.uniqueResult();
-		int eid = e.getEid();
+		int leaveEid = e.getEid();
+		Query query5 = getSession().createQuery("from Employee me where eid=" + leaveEid);
+		Employee emp = (Employee) query5.uniqueResult();
 
-		int availableLeave = e.getAvailableLeave();
+		int employeeId = emp.getEid();
+
+		int availableLeave = emp.getAvailableLeave();
 		Date toDate = e.getToDate();
 		Date fromDate = e.getFromDate();
 		LocalDate d1 = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -73,24 +78,38 @@ public class LeaveDaoImplementation implements LeaveDao {
 		int diffDays = (int) diff.toDays();
 		if (leaveStatus.equals("Approved")) {
 			availableLeave = availableLeave - diffDays;
-			Query query1 = getSession().createQuery(
-					"update Leave em set leaveStatus=:leaveStatus,availableLeave=:availableLeave where leaveId=:leaveId");
+
+			Query query1 = getSession()
+					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
+			Query query3 = getSession()
+					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
 			query1.setParameter("leaveId", leaveId);
 			query1.setParameter("leaveStatus", leaveStatus);
-			query1.setParameter("availableLeave", availableLeave);
+
+			query3.setParameter("eid", employeeId);
+			query3.setParameter("availableLeave", availableLeave);
+
 			query1.executeUpdate();
+
+			query3.executeUpdate();
+
 		} else {
 
-			Query query1 = getSession().createQuery(
-					"update Leave em set leaveStatus=:leaveStatus,availableLeave=:availableLeave where leaveId=:leaveId");
+			Query query1 = getSession()
+					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
+			Query query3 = getSession()
+					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
 			query1.setParameter("leaveId", leaveId);
 			query1.setParameter("leaveStatus", leaveStatus);
-			query1.setParameter("availableLeave", availableLeave);
+
+			query3.setParameter("eid", employeeId);
+			query3.setParameter("availableLeave", availableLeave);
+
 			query1.executeUpdate();
 
+			query3.executeUpdate();
 		}
 		return getLeave();
 
 	}
-
 }

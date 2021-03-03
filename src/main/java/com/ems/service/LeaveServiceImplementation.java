@@ -22,6 +22,7 @@ public class LeaveServiceImplementation implements LeaveService {
 
 	@Override
 	public void createLeave(Leave leave) {
+		leave.setLeaveStatus("Applied");
 		leaveDao.createLeave(leave);
 	}
 

@@ -47,7 +47,7 @@ public class EmployeeController {
 		employee.setAddress(address);
 		employee.setPassword(password);
 		employee.setRole(role);
-		employeeService.createEmployee(employee);
+	//	employeeService.createEmployee(employee);
 		System.out.println("passed " + employee.getFname() + "details to empservice.");
 		return new ModelAndView("login");
 	}

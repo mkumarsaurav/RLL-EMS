@@ -9,7 +9,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "LEAVE")
-
 public class Leave {
 
 	@Id
@@ -17,7 +16,7 @@ public class Leave {
 	private int leaveId;
 	private String leaveType;
 	private String leaveStatus;
-	private int availableLeave;
+	private String leaveComment;
 	private Date toDate;
 	private Date fromDate;
 	private int eid;
@@ -28,13 +27,13 @@ public class Leave {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Leave(int leaveId, String leaveType, String leaveStatus, int availableLeave, Date toDate, Date fromDate,
+	public Leave(int leaveId, String leaveType, String leaveStatus, String leaveComment, Date toDate, Date fromDate,
 			int eid) {
 		super();
 		this.leaveId = leaveId;
 		this.leaveType = leaveType;
 		this.leaveStatus = leaveStatus;
-		this.availableLeave = availableLeave;
+		this.leaveComment = leaveComment;
 		this.toDate = toDate;
 		this.fromDate = fromDate;
 		this.eid = eid;
@@ -64,12 +63,12 @@ public class Leave {
 		this.leaveStatus = leaveStatus;
 	}
 
-	public int getAvailableLeave() {
-		return availableLeave;
+	public String getLeaveComment() {
+		return leaveComment;
 	}
 
-	public void setAvailableLeave(int availableLeave) {
-		this.availableLeave = availableLeave;
+	public void setLeaveComment(String leaveComment) {
+		this.leaveComment = leaveComment;
 	}
 
 	public Date getToDate() {
@@ -99,8 +98,8 @@ public class Leave {
 	@Override
 	public String toString() {
 		return "Leave [leaveId=" + leaveId + ", leaveType=" + leaveType + ", leaveStatus=" + leaveStatus
-				+ ", availableLeave=" + availableLeave + ", toDate=" + toDate + ", fromDate=" + fromDate + ", eid="
-				+ eid + "]";
+				+ ", leaveComment=" + leaveComment + ", toDate=" + toDate + ", fromDate=" + fromDate + ", eid=" + eid
+				+ "]";
 	}
 
 }

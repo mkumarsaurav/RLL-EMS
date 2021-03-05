@@ -2,11 +2,9 @@ package com.ems.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -59,18 +57,10 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 	}
 
 	@Override
-	public Employee getEmployee(Employee employee) {
-		Criteria c = getSession().createCriteria(Employee.class);
-		c.add(Restrictions.eq("email", employee.getEmail()));
-		Employee e = (Employee) c.uniqueResult();
-		return e;
-	}
-
-	@Override
 	public Employee getEmployeeById(int eid) {
 		Query query = getSession().createQuery("from Employee me where eid=" + eid);
-		Employee e = (Employee) query.uniqueResult();
-		return e;
+
+		return (Employee) query.uniqueResult();
 	}
 
 	@Override
@@ -79,13 +69,23 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 		int age = employee.getAge();
 		String fname = employee.getFname();
 		String lname = employee.getLname();
+		String gender = employee.getGender();
+		String email = employee.getEmail();
+		long phoneNumber = employee.getPhoneNumber();
+		String address = employee.getAddress();
 
 		Query query = getSession()
-				.createQuery("update Employee em set fname=:fname, lname=:lname, age=:age where eid=:eid");
+				.createQuery("update Employee em set fname=:fname, lname=:lname, age=:age,gender=:gender,"
+						+ "email=:email,phoneNumber=:phoneNumber,address=:address where eid=:eid");
 		query.setParameter("eid", eid);
 		query.setParameter("fname", fname);
 		query.setParameter("lname", lname);
 		query.setParameter("age", age);
+		query.setParameter("gender", gender);
+		query.setParameter("email", email);
+		query.setParameter("phoneNumber", phoneNumber);
+		query.setParameter("address", address);
+
 		query.executeUpdate();
 		return getEmployeeList();
 	}
@@ -96,6 +96,14 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 		query.setParameter("eid", eid);
 		query.executeUpdate();
 		return getEmployeeList();
+	}
+
+	@Override
+	public String login(String email, String password) {
+		Query query = getSession().createQuery(
+				"select me.role from Employee me where email='" + email + "'and password='" + password + "'");
+
+		return (String) query.uniqueResult();
 	}
 
 }

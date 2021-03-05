@@ -29,8 +29,8 @@ public class LeaveDaoImplementation implements LeaveDao {
 	public List<Leave> getLeave() {
 		Query query = getSession().createQuery("select me from Leave me");
 		@SuppressWarnings("unchecked")
-		List<Leave> empList = query.list();
-		return empList;
+		List<Leave> leaveList = query.list();
+		return leaveList;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class LeaveDaoImplementation implements LeaveDao {
 	@Override
 	public Leave getLeaveForSpecficEmployee(int eid) {
 		Query query = getSession().createQuery("from Leave me where eid=" + eid);
-		Leave e = (Leave) query.uniqueResult();
-		return e;
+
+		return (Leave) query.uniqueResult();
 	}
 
 	@Override
@@ -61,53 +61,49 @@ public class LeaveDaoImplementation implements LeaveDao {
 
 		int leaveId = leave.getLeaveId();
 		String leaveStatus = leave.getLeaveStatus();
-		Query query = getSession().createQuery("from Leave me where leaveId=" + leaveId);
-		Leave e = (Leave) query.uniqueResult();
-		int leaveEid = e.getEid();
-		Query query5 = getSession().createQuery("from Employee me where eid=" + leaveEid);
-		Employee emp = (Employee) query5.uniqueResult();
+		Query getAllLeave = getSession().createQuery("from Leave me where leaveId=" + leaveId);
+		Leave afterSelectLeaveData = (Leave) getAllLeave.uniqueResult();
+		int leaveEid = afterSelectLeaveData.getEid();
+		Query getEmployee = getSession().createQuery("from Employee me where eid=" + leaveEid);
+		Employee employee = (Employee) getEmployee.uniqueResult();
 
-		int employeeId = emp.getEid();
+		int employeeId = employee.getEid();
 
-		int availableLeave = emp.getAvailableLeave();
-		Date toDate = e.getToDate();
-		Date fromDate = e.getFromDate();
-		LocalDate d1 = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		LocalDate d2 = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-		int diffDays = (int) diff.toDays();
+		int availableLeave = employee.getAvailableLeave();
+		Date toDate = afterSelectLeaveData.getToDate();
+		Date fromDate = afterSelectLeaveData.getFromDate();
+		LocalDate fromDay = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate toDay = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		Duration difference = Duration.between(fromDay.atStartOfDay(), toDay.atStartOfDay());
+		int differenceOfDays = (int) difference.toDays();
 		if (leaveStatus.equals("Approved")) {
-			availableLeave = availableLeave - diffDays;
+			availableLeave = availableLeave - differenceOfDays;
 
-			Query query1 = getSession()
+			Query getLeaveStatus = getSession()
 					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
-			Query query3 = getSession()
+			Query getAvailableLeave = getSession()
 					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
-			query1.setParameter("leaveId", leaveId);
-			query1.setParameter("leaveStatus", leaveStatus);
+			getLeaveStatus.setParameter("leaveId", leaveId);
+			getLeaveStatus.setParameter("leaveStatus", leaveStatus);
 
-			query3.setParameter("eid", employeeId);
-			query3.setParameter("availableLeave", availableLeave);
-
-			query1.executeUpdate();
-
-			query3.executeUpdate();
+			getAvailableLeave.setParameter("eid", employeeId);
+			getAvailableLeave.setParameter("availableLeave", availableLeave);
+			getLeaveStatus.executeUpdate();
+			getAvailableLeave.executeUpdate();
 
 		} else {
-
-			Query query1 = getSession()
+			Query getLeaveStatus = getSession()
 					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
-			Query query3 = getSession()
+			Query getAvailableLeave = getSession()
 					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
-			query1.setParameter("leaveId", leaveId);
-			query1.setParameter("leaveStatus", leaveStatus);
+			getLeaveStatus.setParameter("leaveId", leaveId);
+			getLeaveStatus.setParameter("leaveStatus", leaveStatus);
 
-			query3.setParameter("eid", employeeId);
-			query3.setParameter("availableLeave", availableLeave);
+			getAvailableLeave.setParameter("eid", employeeId);
+			getAvailableLeave.setParameter("availableLeave", availableLeave);
+			getLeaveStatus.executeUpdate();
+			getAvailableLeave.executeUpdate();
 
-			query1.executeUpdate();
-
-			query3.executeUpdate();
 		}
 		return getLeave();
 

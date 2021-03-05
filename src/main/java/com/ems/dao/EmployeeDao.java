@@ -10,12 +10,12 @@ public interface EmployeeDao {
 
 	public List<Employee> getEmployeeList();
 
-	public Employee getEmployee(Employee employee);
-
 	List<Employee> updateEmployee(Employee employee);
 
 	List<Employee> deleteEmployee(int eid);
 
 	Employee getEmployeeById(int eid);
+
+	public String login(String email, String password);
 
 }

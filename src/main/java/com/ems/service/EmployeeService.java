@@ -9,12 +9,12 @@ public interface EmployeeService {
 
 	public List<Employee> getEmployeeList();
 
-	public Employee getEmployee(Employee employee);
-
 	public List<Employee> updateEmployee(Employee employee);
 
 	public List<Employee> deleteEmployee(int eid);
 
 	public Employee getEmployeeById(int eid);
+
+	public String login(String email, String password);
 
 }

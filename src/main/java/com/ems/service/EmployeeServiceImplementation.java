@@ -29,12 +29,6 @@ public class EmployeeServiceImplementation implements EmployeeService {
 	}
 
 	@Override
-	public Employee getEmployee(Employee employee) {
-
-		return employeeDao.getEmployee(employee);
-	}
-
-	@Override
 	public List<Employee> updateEmployee(Employee employee) {
 
 		return employeeDao.updateEmployee(employee);
@@ -52,5 +46,10 @@ public class EmployeeServiceImplementation implements EmployeeService {
 
 	}
 
+	@Override
+	public String login(String email, String password) {
+		return employeeDao.login(email, password);
+
+	}
 
 }

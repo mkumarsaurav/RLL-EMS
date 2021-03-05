@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.ems.entity.Manager;
 import com.ems.service.EmployeeService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeRestController {
 	@Autowired
 	EmployeeService employeeService;
@@ -70,6 +72,21 @@ public class EmployeeRestController {
 		}
 
 		return new ResponseEntity<List<Employee>>(li, HttpStatus.OK);
+	}
+
+	@GetMapping("/login/{email}/{password}")
+	private ResponseEntity<List<String>> login(@PathVariable("email") String email,
+			@PathVariable("password") String password) {
+		System.out.println(email);
+		String li = employeeService.login(email, password);
+		List<String> list = new ArrayList<String>();
+		list.add(li);
+		System.out.println(li);
+		if (li.isEmpty()) {
+			return new ResponseEntity<List<String>>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<List<String>>(list, HttpStatus.OK);
 	}
 
 }

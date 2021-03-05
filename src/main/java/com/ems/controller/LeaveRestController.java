@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.ems.entity.Leave;
 import com.ems.service.LeaveService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class LeaveRestController {
 	@Autowired
 	LeaveService leaveService;
@@ -63,9 +65,11 @@ public class LeaveRestController {
 		return new ResponseEntity<List<Leave>>(list, HttpStatus.OK);
 	}
 
-	@PutMapping("/approveLeave")
-	private ResponseEntity<List<Leave>> approveLeave(@RequestBody Leave leave) {
-
+	@PutMapping("/approveLeave/{leaveId}")
+	private ResponseEntity<List<Leave>> approveLeave(@PathVariable("leaveId") int leaveId) {
+		Leave leave = new Leave();
+		leave.setLeaveId(leaveId);
+		leave.setLeaveStatus("Approved");
 		List<Leave> list = leaveService.approveLeave(leave);
 		if (list.isEmpty()) {
 			return new ResponseEntity<List<Leave>>(HttpStatus.NO_CONTENT);
@@ -73,4 +77,18 @@ public class LeaveRestController {
 
 		return new ResponseEntity<List<Leave>>(list, HttpStatus.OK);
 	}
+
+	@PutMapping("/rejectLeave/{leaveId}")
+	private ResponseEntity<List<Leave>> rejectLeave(@PathVariable("leaveId") int leaveId) {
+		Leave leave = new Leave();
+		leave.setLeaveId(leaveId);
+		leave.setLeaveStatus("Rejected");
+		List<Leave> list = leaveService.approveLeave(leave);
+		if (list.isEmpty()) {
+			return new ResponseEntity<List<Leave>>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<List<Leave>>(list, HttpStatus.OK);
+	}
+
 }

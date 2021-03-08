@@ -77,16 +77,15 @@ public class EmployeeRestController {
 	@GetMapping("/login/{email}/{password}")
 	private ResponseEntity<List<String>> login(@PathVariable("email") String email,
 			@PathVariable("password") String password) {
-		System.out.println(email);
-		String li = employeeService.login(email, password);
-		List<String> list = new ArrayList<String>();
-		list.add(li);
+		
+		List<String> li = employeeService.employeeLogin(email, password);
+		
 		System.out.println(li);
 		if (li.isEmpty()) {
+			
 			return new ResponseEntity<List<String>>(HttpStatus.NO_CONTENT);
 		}
-
-		return new ResponseEntity<List<String>>(list, HttpStatus.OK);
+		employeeService.updateLoginTime(email.toUpperCase());
+		return new ResponseEntity<List<String>>(li, HttpStatus.OK);
 	}
-
 }

@@ -27,7 +27,7 @@ public class LeaveServiceImplementation implements LeaveService {
 	}
 
 	@Override
-	public Leave getLeaveForSpecficEmployee(int eid) {
+	public List<Leave> getLeaveForSpecficEmployee(int eid) {
 		return leaveDao.getLeaveForSpecficEmployee(eid);
 	}
 
@@ -40,5 +40,10 @@ public class LeaveServiceImplementation implements LeaveService {
 	public List<Leave> approveLeave(Leave leave) {
 		return leaveDao.approveLeave(leave);
 	}
+	@Override
+	public String getAction(int leaveId) {
+		return leaveDao.getAction(leaveId);
+	}
+
 
 }

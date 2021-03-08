@@ -27,7 +27,7 @@ public class LeaveDaoImplementation implements LeaveDao {
 
 	@Override
 	public List<Leave> getLeave() {
-		Query query = getSession().createQuery("select me from Leave me");
+		Query query = getSession().createQuery("from Leave leave");
 		@SuppressWarnings("unchecked")
 		List<Leave> leaveList = query.list();
 		return leaveList;
@@ -35,24 +35,28 @@ public class LeaveDaoImplementation implements LeaveDao {
 
 	@Override
 	public void createLeave(Leave leave) {
+
+		leave.setLeaveStatus("Applied");
+		leave.setAction("NO");
+
 		getSession().saveOrUpdate(leave);
-		System.out.println(
-				"leave id " + leave.getLeaveId() + " with employee  " + leave.getEid() + "stored in the DB !!!");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Leave getLeaveForSpecficEmployee(int eid) {
+	public List<Leave> getLeaveForSpecficEmployee(int eid) {
 		Query query = getSession().createQuery("from Leave me where eid=" + eid);
-
-		return (Leave) query.uniqueResult();
+		List<Leave> leaveList =  query.list();
+		return leaveList;
 	}
 
 	@Override
-	public List<Leave> cancelLeave(int eid) {
-		Query query = getSession().createQuery("delete from Leave em where eid=:eid");
-		query.setParameter("eid", eid);
+	public List<Leave> cancelLeave(int leaveId) {
+		Query query = getSession().createQuery("delete from Leave em where leaveId=:leaveId");
+		query.setParameter("leaveId", leaveId);
 		query.executeUpdate();
-		System.out.print("Deleted Leave" + eid);
+		
+
 		return getLeave();
 	}
 
@@ -61,9 +65,11 @@ public class LeaveDaoImplementation implements LeaveDao {
 
 		int leaveId = leave.getLeaveId();
 		String leaveStatus = leave.getLeaveStatus();
+
 		Query getAllLeave = getSession().createQuery("from Leave me where leaveId=" + leaveId);
 		Leave afterSelectLeaveData = (Leave) getAllLeave.uniqueResult();
 		int leaveEid = afterSelectLeaveData.getEid();
+		
 		Query getEmployee = getSession().createQuery("from Employee me where eid=" + leaveEid);
 		Employee employee = (Employee) getEmployee.uniqueResult();
 
@@ -76,29 +82,35 @@ public class LeaveDaoImplementation implements LeaveDao {
 		LocalDate toDay = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		Duration difference = Duration.between(fromDay.atStartOfDay(), toDay.atStartOfDay());
 		int differenceOfDays = (int) difference.toDays();
+		
+		String action;
 		if (leaveStatus.equals("Approved")) {
+			action="YES";
 			availableLeave = availableLeave - differenceOfDays;
-
 			Query getLeaveStatus = getSession()
-					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
+					.createQuery("update Leave  set leaveStatus=:leaveStatus , action=:action  where leaveId=:leaveId");
 			Query getAvailableLeave = getSession()
-					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
+					.createQuery("update Employee  set availableLeave=:availableLeave where eid=:eid");
 			getLeaveStatus.setParameter("leaveId", leaveId);
 			getLeaveStatus.setParameter("leaveStatus", leaveStatus);
-
+			getLeaveStatus.setParameter("action", action);
 			getAvailableLeave.setParameter("eid", employeeId);
 			getAvailableLeave.setParameter("availableLeave", availableLeave);
 			getLeaveStatus.executeUpdate();
 			getAvailableLeave.executeUpdate();
-
+			
+			
+			
+			
 		} else {
+			action="YES";
 			Query getLeaveStatus = getSession()
-					.createQuery("update Leave em set leaveStatus=:leaveStatus where leaveId=:leaveId");
+					.createQuery("update Leave em set leaveStatus=:leaveStatus , action=:action  where leaveId=:leaveId");
 			Query getAvailableLeave = getSession()
 					.createQuery("update Employee em set availableLeave=:availableLeave where eid=:eid");
 			getLeaveStatus.setParameter("leaveId", leaveId);
 			getLeaveStatus.setParameter("leaveStatus", leaveStatus);
-
+			getLeaveStatus.setParameter("action", action);
 			getAvailableLeave.setParameter("eid", employeeId);
 			getAvailableLeave.setParameter("availableLeave", availableLeave);
 			getLeaveStatus.executeUpdate();
@@ -108,4 +120,14 @@ public class LeaveDaoImplementation implements LeaveDao {
 		return getLeave();
 
 	}
+	@Override
+	public String getAction(int leaveId) {
+		Query query = getSession().createQuery(
+				"select le.action from Leave le where leaveId=" + leaveId);
+		String action =(String) query.uniqueResult();
+		System.out.println("action"+action);
+		
+		return action;
+	}
+
 }

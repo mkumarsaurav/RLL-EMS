@@ -44,14 +44,16 @@ public class LeaveRestController {
 
 	@GetMapping("/searchLeave/{eid}")
 	public ResponseEntity<List<Leave>> getLeaveForSpecficEmployee(@PathVariable("eid") int eid) {
-		List<Leave> list = new ArrayList<Leave>();
-		Leave leave = new Leave();
-		leave = leaveService.getLeaveForSpecficEmployee(eid);
-		list.add(leave);
-		if (list.isEmpty()) {
+	
+		
+		List<Leave>leaveList= leaveService.getLeaveForSpecficEmployee(eid);
+		
+		if (leaveList.isEmpty()) {
 			return new ResponseEntity<List<Leave>>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Leave>>(list, HttpStatus.OK);
+		return new ResponseEntity<List<Leave>>(leaveList, HttpStatus.OK);
+		
+		
 	}
 
 	@DeleteMapping("/cancelLeave/{eid}")
@@ -80,6 +82,7 @@ public class LeaveRestController {
 
 	@PutMapping("/rejectLeave/{leaveId}")
 	private ResponseEntity<List<Leave>> rejectLeave(@PathVariable("leaveId") int leaveId) {
+		
 		Leave leave = new Leave();
 		leave.setLeaveId(leaveId);
 		leave.setLeaveStatus("Rejected");
@@ -89,6 +92,19 @@ public class LeaveRestController {
 		}
 
 		return new ResponseEntity<List<Leave>>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/action/{leaveId}")
+	public ResponseEntity<List<String>> getAction(@PathVariable("leaveId") int leaveId) {
+	
+		List<String> list=new ArrayList<String>();
+		
+		String action= leaveService.getAction(leaveId);
+		list.add(action);
+	
+		return new ResponseEntity <List<String>>(list, HttpStatus.OK);
+		
+		
 	}
 
 }

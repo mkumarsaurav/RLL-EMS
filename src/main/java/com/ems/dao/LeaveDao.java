@@ -10,10 +10,10 @@ public interface LeaveDao {
 
 	void createLeave(Leave leave);
 
-	Leave getLeaveForSpecficEmployee(int eid);
+	List<Leave> getLeaveForSpecficEmployee(int eid);
 
 	List<Leave> cancelLeave(int eid);
 
 	List<Leave> approveLeave(Leave leave);
-
+	String getAction(int leaveId);
 }

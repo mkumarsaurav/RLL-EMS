@@ -16,6 +16,7 @@ public interface EmployeeDao {
 
 	Employee getEmployeeById(int eid);
 
-	public String login(String email, String password);
+	public List<String> employeeLogin(String email, String password);
 
+	public void updateLoginTime(String email);
 }

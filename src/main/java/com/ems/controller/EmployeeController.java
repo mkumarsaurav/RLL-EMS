@@ -1,5 +1,7 @@
 package com.ems.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,6 @@ public class EmployeeController {
 		return new ModelAndView("register");
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView signin() {
-		return new ModelAndView("login");
-	}
-
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ModelAndView signup(@RequestParam("txtfname") String fname, @RequestParam("txtlname") String lname,
 			@RequestParam("txtage") int age, @RequestParam("txtgender") String gender,
@@ -45,25 +42,8 @@ public class EmployeeController {
 		employee.setAddress(address);
 		employee.setPassword(password);
 		employee.setRole(role);
-
 		System.out.println("passed " + employee.getFname() + "details to empservice.");
 		return new ModelAndView("login");
-	}
-
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public ModelAndView search(@RequestParam("eid") int eid) {
-		employee = new Employee();
-		employee.setEid(eid);
-		Employee ed = employeeService.getEmployeeById(eid);
-
-		if (ed == null) {
-			ModelAndView mv = new ModelAndView("login");
-			mv.addObject("msg", "Employee not found");
-			return mv;
-		} else {
-			return allEmployee();
-		}
-
 	}
 
 	public ModelAndView getEmployee(List<Employee> li) {
@@ -112,6 +92,28 @@ public class EmployeeController {
 		mv.addObject("msg", "Employee Updated Successfully");
 		mv.addObject("emplist", li);
 		return mv;
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public List<Employee> getEmployeeListDetails() {
+		List<Employee> empList = new ArrayList<Employee>();
+		Employee employee = new Employee();
+		Date tempdate = new Date(1403685556000L);
+		employee.setEid(101);
+		employee.setFname("alex");
+		employee.setLname("a");
+		employee.setAge(20);
+		employee.setAddress("hyd");
+		employee.setAvailableLeave(24);
+		employee.setEmail("a@gmail.com");
+		employee.setGender("male");
+		employee.setPassword("alex");
+		employee.setPhoneNumber(909090);
+		employee.setRole("Employee");
+		employee.setLoginTime(tempdate);
+
+		empList.add(employee);
+		return empList;
 	}
 
 }

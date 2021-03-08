@@ -47,9 +47,13 @@ public class EmployeeServiceImplementation implements EmployeeService {
 	}
 
 	@Override
-	public String login(String email, String password) {
-		return employeeDao.login(email, password);
-
+	public List<String> employeeLogin(String email, String password) {
+		return employeeDao.employeeLogin(email.toUpperCase(),password);
+	}
+	@Override
+	public void updateLoginTime(String email) {
+		employeeDao.updateLoginTime(email);
+		
 	}
 
 }

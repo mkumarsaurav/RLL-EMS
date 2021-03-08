@@ -25,4 +25,15 @@ public class ManagerServiceImplementation implements ManagerService {
 	public List<Leave> totalLeaveRejected(Leave leave) {
 		return managerDao.totalLeaveRejected(leave);
 	}
+	@Override
+	public void setTotalRejectedLeave(int eid) {
+		managerDao.setTotalRejectedLeave(eid);
+		
+	}
+
+	@Override
+	public void setTotalApprovedLeave(int eid) {
+		managerDao.setTotalApprovedLeave(eid);
+		
+	}
 }

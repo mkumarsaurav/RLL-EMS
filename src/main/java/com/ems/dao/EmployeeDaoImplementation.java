@@ -1,5 +1,7 @@
 package com.ems.dao;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -25,8 +27,9 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 	public void createEmployee(Manager manager) {
 
 		manager.setAvailableLeave(24);
+		manager.setLoginTime(new Date());
 
-		if (manager.getRole().equals("Manager")) {
+		if (manager.getRole().equals("MANAGER")) {
 
 			getSession().saveOrUpdate(manager);
 
@@ -41,8 +44,9 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 			employee.setLname(manager.getLname());
 			employee.setPassword(manager.getPassword());
 			employee.setRole(manager.getRole());
-			employee.setPhoneNumber(manager.getPhoneNumber());
 			employee.setAvailableLeave(24);
+			employee.setPhoneNumber(manager.getPhoneNumber());
+			employee.setLoginTime(new Date());
 			getSession().saveOrUpdate(employee);
 		}
 
@@ -99,11 +103,48 @@ public class EmployeeDaoImplementation implements EmployeeDao {
 	}
 
 	@Override
-	public String login(String email, String password) {
+	public List<String> employeeLogin(String email, String password) {
+		
 		Query query = getSession().createQuery(
-				"select me.role from Employee me where email='" + email + "'and password='" + password + "'");
+				"select role from Employee  where email='" + email + "'and password='" + password + "'");
+		Query query1 = getSession().createQuery(
+				"select fname from Employee  where email='" + email+ "'and password='" + password + "'");
+		Query query3 = getSession().createQuery(
+				"select loginTime from Employee  where email='" + email + "'and password='" + password + "'");
+		Query query4 = getSession().createQuery(
+				"select eid from Employee  where email='" + email + "'and password='" + password + "'");
+		Query query5 = getSession().createQuery(
+				"select availableLeave from Employee  where email='" + email + "'and password='" + password + "'");
+		
+		String e = (String) query.uniqueResult();
+		String fname=(String)query1.uniqueResult();
+		Date loginTime=(Date) query3.uniqueResult();
+		int  eidd=(int) query4.uniqueResult();
+		int avail=(int)query5.uniqueResult();
+		String id=String.valueOf(eidd);
+		String availableLave=String.valueOf(avail);
+		List<String> list = new ArrayList<String>();
+		list.add(e);
+		list.add(email);
+		list.add(fname);
+		
+		if(!(loginTime==null)) {
+		list.add(loginTime.toString());}
+		else {
+			list.add("First Login");
+		}
+		list.add(id);
+		list.add(availableLave);
+		
+		return (list);
+	}
+	@Override
+	public void updateLoginTime(String email) {
+		Query query=getSession().createSQLQuery("CALL updateTime(:email)");
 
-		return (String) query.uniqueResult();
+		query.setParameter("email", email);
+		query.executeUpdate();
+		
 	}
 
 }

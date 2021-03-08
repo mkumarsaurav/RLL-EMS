@@ -35,5 +35,21 @@ public class ManagerDaoImplementation implements ManagerDao {
 		List<Leave> leaveRejectedList = query.list();
 		return leaveRejectedList;
 	}
+	@Override
+	public void setTotalRejectedLeave(int eid) {
+		
+		Query query=getSession().createQuery("update Manager set  totalLeaveRejected=totalLeaveRejected+1 where eid="+eid);
+	query.executeUpdate();
+		
+		
+	}
+
+
+	@Override
+	public void setTotalApprovedLeave(int eid) {
+
+		Query query=getSession().createQuery("update Manager set   totalLeaveApproved=totalLeaveApproved+1 where eid="+eid);
+	query.executeUpdate();
+	}
 
 }

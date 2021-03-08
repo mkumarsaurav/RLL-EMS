@@ -9,5 +9,7 @@ public interface ManagerDao {
 	List<Leave> totalLeaveApproved(Leave leave);
 
 	List<Leave> totalLeaveRejected(Leave leave);
+	public void setTotalRejectedLeave(int eid);
+	public void setTotalApprovedLeave(int eid);
 
 }

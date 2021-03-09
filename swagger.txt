@@ -1,0 +1,435 @@
+swagger: "2.0"
+info:
+  description: "This is a portal for Employee tracking"
+  version: "1.0.0"
+  title: "Employee Management System"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8085"
+basePath: "/LeaveMGM"
+tags:
+- name: "Manager"
+  description: "Manages leave tracking and Employee Details"
+- name: "Employee"
+  description: "Apply for leave and Cancel Leave"
+ 
+schemes:
+- "http"
+
+paths:
+ 
+  /create:
+    post:
+      tags:
+      - "Manager" 
+      summary: "adds new employee"
+      description: "Manager adds new Employee"
+      operationId: "create"
+      consumes:
+      - "application/json"
+  
+      produces:
+   
+      - "application/json"
+      
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of Employee Details"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definations/Employee"
+     
+      
+      responses:
+        "405":
+          description: "invalid input"
+      
+   
+  /upadte:
+    put:
+      tags:
+      - "Manager"
+      summary: "Manager can update Employee details"
+      description: ""
+      operationId: "UpdateEmployee"
+      produces:
+      
+      - "application/json"
+      
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "First Name,Last Name, Age, Email, Password, Gender, Phone Number and Address "
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definations/Employee"
+     
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definations/Employee"
+        "400":
+          description: " not updated"
+      
+  /search/{eid}:
+    get:
+      tags:
+      - "Manager"
+      summary: "Retrieving Emloyee  using Employee Id"
+      description: ""
+      operationId: "searchEmployeeById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eid"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+        format: "eid"
+        items:
+          type: "integer"
+          format: "eid"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Employee"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "Pet not found"
+     
+      
+  /searchLeave/{eid}:
+    get:
+      tags:
+      - "Employee"
+      summary: "Fetches leave details using Employee Id"
+      description: "Returns Specific Empoyee leave details"
+      operationId: "eid"
+      produces:
+     
+      - "application/json"
+      parameters:
+      - name: "eid"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Leave"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "Pet not found"
+     
+ 
+  /applyLeave:
+    post:
+      tags:
+      - "Employee" 
+      summary: "apply leave"
+      description: " "
+      operationId: "applyleave"
+      consumes:
+      - "application/json"
+  
+      produces:
+   
+      - "application/json"
+      
+      parameters:
+      - in: "body"
+        name: "body"
+        description: " "
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definations/Leave"
+     
+      
+      responses:
+        "405":
+          description: "invalid input"
+          
+  /action/{leaveId}:
+    get:
+      tags:
+      - "Manager"
+      summary: "Fetches action  "
+      description: "Fetches Manager Taken Action or noton the particular leave "
+      operationId: "leaveAction"
+      produces:
+     
+      - "application/json"
+      parameters:
+      - name: "leaveId"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Leave"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "not approved"
+          
+  
+     
+  /approveLeave/{leaveId}:
+    put:
+      tags:
+      - "Manager"
+      summary: "Manager can approve leave"
+      description: ""
+      operationId: "updateLeave"
+      produces:
+      
+      - "application/json"
+      
+      parameters:
+      - in: "path"
+        type: "integer"
+        name: "leaveId"
+        required: true
+     
+      
+        
+     
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definations/Leave"
+        "400":
+          description: "Invalid status value"
+          
+  /totalApprovedLeave/{eid}:
+    get:
+      tags:
+      - "Manager"
+      summary: "Fetches total Leave approved by specific Manager"
+      description: ""
+      operationId: ""
+      produces:
+     
+      - "application/json"
+      parameters:
+      - name: "eid"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Manager"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "Reservation not found"
+  
+  /getLeave:
+    get:
+      tags:
+      - "Manager"
+      summary: "Fetches leave details"
+      description: "fetches all employee leave detaisl to manager"
+      operationId: ""
+      produces:
+     
+      - "application/json"
+     
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Leave"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "Leave not found"
+  /totalRejectedLeave/{eid}:
+    get:
+      tags:
+      - "Manager"
+      summary: "Fetches total leave rejected by sprecific manager"
+      description: ""
+      operationId: ""
+      produces:
+     
+      - "application/json"
+      parameters:
+      - name: "eid"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Manager"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: " "
+          
+  /allemp:
+    get:
+      tags:
+      - "Manager"
+      summary: "Fetches all employee details"
+      description: " "
+      operationId: " "
+      produces:
+     
+      - "application/json"
+      
+       
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            
+            items:
+              $ref: "#/definations/Employee"
+        "400":
+          description: "Invalid ID supplied"
+         
+        "404":
+          description: "no employee found"
+  
+  
+          
+  
+definitions: 
+  Employee:
+    type: object
+    properties:
+      eid:
+        type: "integer"
+        format: "int64"
+       
+      fname:
+        type: "string"
+        
+      lname:
+        type: "string"
+       
+      phoneNumber:                     
+        type: "string"
+       
+      gender:
+        type: "string"
+       
+      email:
+        type: "string"
+        format: "email"
+        pattern: '^[A-Za-z0-9]+([._+-][0-9a-zA-Z]+)?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}([.][a-zA-Z]{2})?'
+         
+      address:
+        type: "string"
+      
+      password:
+        type: "string"
+        
+      role:
+        type: "string"
+      avaialableLeave:
+        type:"integer"
+        
+     
+        
+  
+  Leave:
+    type: "object"
+    properties:
+      leaveId:
+        type: "integer"
+        format: "int64"
+      fromDate:
+        type: "string"
+        format: "date"
+      toDate:
+        type: "string"
+        format: "date"
+      eid:
+        type: "integer"
+
+      action:
+        type: "string"
+      
+      
+  Manager:
+    type: "object"
+    properties:
+      totalLeaveAprroved:
+        type: "integer"
+        format: "int64"
+      totalLeaveRejected:
+        type : "integer"
+       
+  
+  
+  
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
